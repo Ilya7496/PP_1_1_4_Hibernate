@@ -24,7 +24,6 @@ public class UserDaoJDBCImpl implements UserDao {
                     "  `lastName` VARCHAR(45) NULL,\n" +
                     "  `age` INT NULL,\n" +
                     "  PRIMARY KEY (`id`));");
-            System.out.println("Таблица создана");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -46,7 +45,6 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setString(2, lastName);
             preparedStatement.setInt(3, age);
             preparedStatement.executeUpdate();
-            System.out.println("User с именем -" + name + " добавлен в БД");
         } catch (SQLException e) {
             e.printStackTrace();
         }
