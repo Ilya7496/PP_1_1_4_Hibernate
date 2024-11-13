@@ -4,12 +4,10 @@ import jm.task.core.jdbc.model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import jm.task.core.jdbc.util.Util;
 
 import java.util.List;
 
 import static jm.task.core.jdbc.util.Util.getSessionFactory;
-
 
 public class UserDaoHibernateImpl implements UserDao {
 
@@ -21,19 +19,21 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         try (Session session = getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
+
             String sql = "CREATE TABLE IF NOT EXISTS users " +
-                    "(id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
-                    "name VARCHAR(50) NOT NULL," +
-                    "lastName VARCHAR(50) NOT NULL," +
+                    "(id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+                    "name VARCHAR(50) NOT NULL, lastName VARCHAR(50) NOT NULL, " +
                     "age TINYINT NOT NULL)";
+
             Query query = session.createSQLQuery(sql);
             query.executeUpdate();
+
             transaction.commit();
-    } catch (Exception e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -94,8 +94,7 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
         try (Session session = getSessionFactory().openSession()) {
-            List<User> fromUser = session.createQuery("from user", User.class).list();
-            return fromUser;
+            return session.createQuery("from User", User.class).list();
         }
     }
 
